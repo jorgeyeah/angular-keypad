@@ -18,6 +18,8 @@ export function KeypadDirective() {
         bindToController: {
             bcNumberModel: '=',
             bcMaxLength: '@',
+            bcMaxDecimals: '@',
+            bcDecimalPoint: '@',
         },
         templateUrl: template,
         controller: KeypadController,

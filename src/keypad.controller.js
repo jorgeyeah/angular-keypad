@@ -28,6 +28,17 @@ export class KeypadController {
         // Set the max length
         this.bcMaxLength = this.bcMaxLength || this.KeypadConfig.maxLength;
 
+        // Set the max decimals
+        this.bcMaxDecimals = this.bcMaxDecimals || this.KeypadConfig.maxDecimals;
+
+        // Set the decimal point
+        this.bcDecimalPoint = this.bcDecimalPoint || this.KeypadConfig.decimalPoint;
+
+        // Set and replace the decimal point
+        if (this.numbers.indexOf(this.KeypadConfig.decimalPoint) > -1) {
+            this.numbers[this.numbers.indexOf(this.KeypadConfig.decimalPoint)] =
+                this.bcDecimalPoint;
+        }
     }
 
 
@@ -37,6 +48,32 @@ export class KeypadController {
      * @param {String} number
      */
     setNumber(number) {
+
+        // If the decimal point is entered
+        if (number === this.bcDecimalPoint) {
+            // Add a zero, if it is the first character
+            if (this.bcNumberModel === '') {
+                this.bcNumberModel = '0';
+            }
+            // If the decimal point exists, exit
+            if (this.bcNumberModel.indexOf(this.bcDecimalPoint) > -1) {
+                return; /* do nothing */
+            }
+        }
+        // If the max decimal places is reached
+        if (this.bcMaxDecimals && angular.isNumber(+this.bcMaxDecimals)) {
+            if (this.bcNumberModel.indexOf(this.bcDecimalPoint) > -1) {
+                if (this.bcNumberModel.length -
+                    this.bcNumberModel.indexOf(this.bcDecimalPoint) - 1 >=
+                    this.bcMaxDecimals) {
+                    return; /* do nothing */
+                }
+            }
+        }
+        // If more zeros are added to the beginning, exit
+        if (number === 0 && this.bcNumberModel === '0') {
+            return; /* do nothing */
+        }
 
         if (!this.bcMaxLength || this.bcNumberModel.length < this.bcMaxLength) {
             this.bcNumberModel += number;

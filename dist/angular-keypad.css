@@ -39,7 +39,7 @@
 }
 
 .bc-keypad__button:nth-of-type(10) {
-  margin-left: 32%;
+  /*margin-left: 32%;*/
 }
 
 .bc-keypad__button--backspace {
